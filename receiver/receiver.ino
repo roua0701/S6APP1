@@ -85,7 +85,7 @@ bool connectToServer() {
 }
 
 /**
- * Scan for BLE servers and find the first one that advertises the service we are looking for.
+ * Scan les serveurs BLE
  */
 class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks {
   void onResult(BLEAdvertisedDevice advertisedDevice) {
@@ -102,8 +102,6 @@ class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks {
     }
   }
 };
-
-
 
 void setup() {
   Serial.begin(115200);
@@ -132,13 +130,11 @@ void loop() {
   if (!connected && doScan) {
     BLEDevice::getScan()->start(0);
   }
-
-  delay(1000);
-
-
   
   if (bluetoothOn && Serial1.available()) {
     String message = Serial1.readStringUntil('\n');
-    Serial.println("Message reçu: " + message);
+    Serial.println("Données des capteurs: " + message);
   }
+
+  delay(1000);
 }
