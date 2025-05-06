@@ -57,7 +57,7 @@ void setup() {
 
  
   // Création du périphérique Bluetooth avec Server, Service et Characteristic correspondant
-  BLEDevice::init("Alex - Station de capteurs");
+  BLEDevice::init("ESP32");
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
   BLEService *pService = pServer->createService(SERVICE_UUID);
@@ -88,6 +88,9 @@ void loop() {
 
   // Envoi des données des capteurs sur le lien UART et notification BLE
   if (deviceConnected) {
+    pCharacteristic->setValue((uint8_t *)&value, 4);
+    pCharacteristic->notify();
+    value++;
     if (donnees != "" && donnees != NULL) {
       Serial1.println(donnees);
       Serial.println(parseValeurs(donnees));
@@ -110,6 +113,7 @@ void loop() {
   if (deviceConnected && !oldDeviceConnected) {
     oldDeviceConnected = deviceConnected;
   }
+  delay(1000);
 }
 
 
